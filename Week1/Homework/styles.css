@@ -1,0 +1,237 @@
+/* 헤더 */
+header img {
+    width: 40px;
+}
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    background-color: white;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: center;
+    align-items: center;
+}
+/*그림자효과*/
+.profile-logo {
+  transition: box-shadow 0.2s;
+}
+.profile-logo:hover {
+  box-shadow: 0 4px 12px gray;
+}
+
+/* 겹침 방지 */
+body{
+    margin: 0;
+    padding: 100px 20px 0;
+    display: grid;
+    grid-template-columns: 160px minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+}
+main {
+    min-width: 0;
+    width: 100%;
+}
+
+/* 네비게이션(사이드 목차) */
+nav {
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 100px
+}
+nav a {
+    background-color:rgb(202, 219, 234);
+    padding: 20px;
+    text-decoration: none;
+    color:black;
+    border: 1px solid white;
+}
+nav a:hover {
+  background-color: #99b0e0;
+  color: white;
+}
+nav a:first-child {
+  border-radius: 16px 16px 0 0;
+}
+nav a:last-child {
+  border-radius: 0 0 16px 16px;
+}
+
+/* 포토 덤프 섹션 */
+#photodump > div {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: repeat(3, 150px);
+  gap: 10px;
+
+  grid-template-areas:
+    "photo1 photo2 photo3 photo3"
+    "photo4 photo4 photo4 photo5"
+    "photo4 photo4 photo4 photo6";
+}
+#photodump > div > div {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+#photodump > div > div > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+#photodump > div > div:hover > img {
+  transform: scale(1.1);
+}
+#photodump > div > div:nth-child(1) { grid-area: photo1; }
+#photodump > div > div:nth-child(2) { grid-area: photo2; }
+#photodump > div > div:nth-child(3) { grid-area: photo3; }
+#photodump > div > div:nth-child(4) { grid-area: photo4; }
+#photodump > div > div:nth-child(5) { grid-area: photo5; }
+#photodump > div > div:nth-child(6) { grid-area: photo6; }
+
+/* 좋아하는 것 */
+#likes img {
+  display: block;
+  width: 220px;
+  height: 220px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+.likes-gallery {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.likes-gallery::-webkit-scrollbar {
+  display: none;
+}
+
+.likes-gallery > img {
+  scroll-snap-align: start;
+}
+.loop-banner {
+  margin-top: 24px;
+  overflow: hidden;
+}
+
+.loop-track {
+  display: flex;
+  width: max-content;
+  animation: photo-loop 40s linear infinite;
+}
+
+.loop-group {
+  display: flex;
+  flex-shrink: 0;
+  gap: 12px;
+  padding-right: 12px;
+}
+@keyframes photo-loop {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+.loop-banner:hover .loop-track {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .loop-track {
+    animation: none;
+  }
+
+  .loop-banner {
+    overflow-x: auto;
+  }
+}
+
+/* 관심사 섹션 */
+#interests > div {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+#interests img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+/*반응형구현*/
+@media (max-width: 1200px) {
+  #interests > div {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+@media (max-width: 900px) {
+  #interests > div {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 600px) {
+  #interests > div {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+#interests > div > div {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 10px;
+}
+#interests > div > div:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+#interests > div > div {
+  background-color: white;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+#interests > div > div:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+#interests button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 16px;
+  background-color: #eeeeee;
+  color: #333333;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+#interests button:first-of-type:hover {
+  background-color: #b8ddf5;
+  color: #163d57;
+}
+#interests button:last-of-type:hover {
+  background-color: #f5c1b8;
+  color: #652b22;
+}
+
+/* To.웹토리 섹션 */
+#message p::before {
+  content: " 🧩 ";
+}
+
+#message p::after {
+  content: " 🧩 ";
+}
+
+/* 푸터 */
+footer {
+  grid-column: 1 / -1;
+  background-color: black;
+  color: white;
+  text-align: center;
+  padding: 12px 0;
+}
