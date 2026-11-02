@@ -1,5 +1,17 @@
-/** @jsxImportSource @emotion/react */
 
+/** @jsxImportSource @emotion/react */
+import {
+  headerStyle,
+  h1Style,
+  boardStyle,
+  pStyle,
+  rankingStyle,
+  rankingHeaderStyle,
+  modalStyle,
+  modalOverlayStyle,
+  levelStyle,
+  menuButtonStyle,
+} from "./App.styles";
 import "./App.css";
 import { useState, useEffect, useRef } from "react";
 import { css } from "@emotion/react";
@@ -36,8 +48,8 @@ function App() {
   const gridSize = level + 2;
   const totalNumbers = gridSize * gridSize * 2;
 
-  const [numbers, setNumbers] = useState(shuffle(createNumbers(1, 9)));
-  const [bigNumbers, setbigNumbers] = useState(() =>
+  const [numbers, setNumbers] = useState(() => shuffle(createNumbers(1, 9)));
+  const [bigNumbers, setBigNumbers] = useState(() =>
     shuffle(createNumbers(10, 18)),
   );
 
@@ -69,7 +81,7 @@ function App() {
     const size = selectedLevel + 2;
     const count = size * size;
     setNumbers(shuffle(createNumbers(1, count))); //숫자 다시 섞기
-    setbigNumbers(shuffle(createNumbers(count + 1, count * 2))); //숫자 다시 섞기
+    setBigNumbers(shuffle(createNumbers(count + 1, count * 2))); //숫자 다시 섞기
     setNextNumber(1); //다음 클릭할 숫자를 1로 초기화
     setTime(0); //타이머 0초로 초기화
     setIsPlaying(false); //타이머 중지
@@ -87,14 +99,10 @@ function App() {
       setIsPlaying(true);
     }
     //클릭 후 숫자 교체하기
-    const updated = [...numbers];
-    if (bigNumbers.length > 0) {
-      updated[index] = bigNumbers[0];
-    } else {
-      updated[index] = null;
-    }
-    setNumbers(updated);
-    setbigNumbers(bigNumbers.slice(1)); //큰숫자들 중 사용한 숫자 제거
+    setNumbers(
+      numbers.map((n, i) => (i === index ? (bigNumbers[0] ?? null) : n)),
+    );
+    setBigNumbers(bigNumbers.slice(1)); //큰숫자들 중 사용한 숫자 제거
     setNextNumber(nextNumber + 1); //다음에 눌러야 할 숫자
 
     //타이머 종료
@@ -105,7 +113,7 @@ function App() {
       setTime(totalTime);
       //랭킹판에 기록
       const newRecord = {
-        date: new Date().toLocaleString(),
+        date: new Date().toISOString(),
         level: level,
         time: totalTime,
       };
@@ -119,7 +127,6 @@ function App() {
       setRecords(updatedRecords);
       setFinalTime(totalTime);
       setShowModal(true);
-      resetGame();
     }
   }
   //랭킹 정렬
@@ -150,10 +157,19 @@ function App() {
       <header css={headerStyle}>
         <h1 css={h1Style}>🔢숫자 클릭 게임</h1>
         <div>
-          <button type="button" onClick={() => setMenu("game")}>
+          <button
+            type="button"
+            css={menuButtonStyle(menu === "game")}
+            onClick={() => setMenu("game")}
+          >
             게임
           </button>
-          <button type="button" onClick={() => setMenu("ranking")}>
+
+          <button
+            type="button"
+            css={menuButtonStyle(menu === "ranking")}
+            onClick={() => setMenu("ranking")}
+          >
             랭킹
           </button>
         </div>
@@ -163,6 +179,7 @@ function App() {
             <div css={levelStyle}>
               {/*레벨선택*/}
               <select
+                aria-label="레벨 선택"
                 value={level}
                 onChange={(event) => {
                   const selectedLevel = Number(event.target.value);
@@ -243,7 +260,7 @@ function App() {
                       <td>{index + 1}</td>
                       <td>Level {record.level}</td>
                       <td>{record.time.toFixed(2)}초</td>
-                      <td>{record.date}</td>
+                      <td>{new Date(record.date).toLocaleString("ko-KR")}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -255,20 +272,26 @@ function App() {
       {/* 게임 완료 모달 */}
       {showModal &&
         createPortal(
-          <div css={modalStyle}>
-            <h2>🎉 게임 완료!</h2>
-            <p>걸린 시간: {finalTime.toFixed(2)}초</p>
-            <button
-              type="button"
-              onClick={() => {
-                setShowModal(false);
-                resetGame();
-              }}
+          <div css={modalOverlayStyle}>
+            <div
+              css={modalStyle}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="game-complete-title"
             >
-              확인
-            </button>
+              <h2 id="game-complete-title">🎉 게임 완료!</h2>
+              <p>걸린 시간: {finalTime.toFixed(2)}초</p>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowModal(false);
+                  resetGame();
+                }}
+              >
+                확인
+              </button>
+            </div>
           </div>,
-
           document.body,
         )}
     </>
@@ -276,141 +299,3 @@ function App() {
 }
 
 export default App;
-
-//============================================================================
-
-//헤더
-const headerStyle = css`
-  width: 100%;
-  background-color: white;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  justify-items: center;
-  align-items: center;
-
-  h1 {
-    font-size: 15px;
-  }
-`;
-
-//숫자 버튼
-const boardStyle = (gridSize) => css`
-  margin-top: 50px;
-  display: grid;
-  grid-template-columns: repeat(${gridSize}, minmax(0, 1fr));
-  width: min(90vw, 450px);
-  margin-left: auto;
-  margin-right: auto;
-  gap: 10px;
-
-  button {
-    aspect-ratio: 1 / 1;
-    min-width: 0;
-    font-size: 30px;
-    border-radius: 8px;
-    cursor: pointer;
-
-    /*클릭되는것같은효과*/
-    &:active {
-      background-color: #b6dfce;
-      transform: scale(0.9);
-    }
-  }
-`;
-
-//다음 숫자
-const pStyle = css`
-  margin-top: 40px;
-  text-align: center;
-  strong {
-    font-size: 28px;
-  }
-`;
-
-const h1Style = css`
-  text-align: left;
-`;
-//랭킹판
-const rankingStyle = css`
-  width: min(90%, 550px);
-  margin: 32px auto;
-  box-sizing: border-box;
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: white;
-    border-radius: 8px;
-  }
-
-  th,
-  td {
-    padding: 12px;
-    text-align: center;
-    border-bottom: 1px solid #e5e5e5;
-    font-size: 14px;
-  }
-
-  th {
-    background-color: #b6dfce;
-    font-weight: 700;
-  }
-`;
-
-const rankingHeaderStyle = css`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  h2 {
-    margin: 0;
-    font-size: 20px;
-  }
-
-  button {
-    /*초기화버튼*/
-    padding: 8px 14px;
-    border: 1px solid #e88b8b;
-    border-radius: 6px;
-    background-color: white;
-    color: #d9534f;
-  }
-`;
-
-//게임 완료 모달
-const modalStyle = css`
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%); /*완벽한 중앙 정렬을 위하여 */
-  width: min(80%, 350px);
-  padding: 30px;
-  background-color: white;
-  border-radius: 12px;
-  text-align: center;
-  box-sizing: border-box;
-
-  h2 {
-    margin-top: 0;
-  }
-
-  p {
-    margin: 20px 0;
-    font-size: 18px;
-  }
-
-  button {
-    padding: 10px 24px;
-    border: none;
-    border-radius: 6px;
-    background-color: #b6dfce;
-    cursor: pointer;
-  }
-`;
-
-//레벨 선택과 타이머 간격 만들기
-const levelStyle = css`
-  display: flex;
-  align-items: center;
-  gap: 20px;
-`;
