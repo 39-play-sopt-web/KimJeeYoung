@@ -15,10 +15,6 @@ const GlobalStyle = createGlobalStyle`
     color: inherit;
     text-decoration: none;
   }
-  {/*아니밑에두줄이거왜안되지뭐가문제지*/}
-  card {
-  background-color:${({ theme }) => theme.colors.card}; };
-
   .overview {
   color: ${({ theme }) => theme.colors.text};}
 
