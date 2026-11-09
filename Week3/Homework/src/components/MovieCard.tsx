@@ -76,7 +76,16 @@ const Card = styled.article`
 `;
 
 const Info = styled.div`
-  padding: 0px 18px;
+  padding: 0 18px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  h2,
+  p {
+    margin: 0;
+  }
 
   .title {
     font-size: 23px;
@@ -89,7 +98,6 @@ const Info = styled.div`
   .releaseDate {
     margin-top: -10px;
     font-size: 18px;
-
     color: #adf7dc;
   }
   .overview {
@@ -97,6 +105,5 @@ const Info = styled.div`
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
     overflow: hidden;
-    margin-top: -5px;
   }
 `;
