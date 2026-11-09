@@ -7,6 +7,7 @@ import styled from "styled-components";
 
 function MovieList() {
   const [movies, setMovies] = useState<Movie[]>([]);
+  const [error, setError] = useState(false);
   const [rating, setRating] = useState<{
     min?: number;
     max?: number;
@@ -22,8 +23,6 @@ function MovieList() {
     let hasMore = true;
     let failed = false;
     let frameId = 0;
-
-    setMovies([]);
 
     async function loadMovies() {
       if (requesting || !hasMore || failed || controller.signal.aborted) {
@@ -78,6 +77,7 @@ function MovieList() {
         if (!controller.signal.aborted) {
           // 실패하면 자동 요청 중단
           failed = true;
+          setError(true);
         }
       } finally {
         requesting = false;
@@ -128,7 +128,13 @@ function MovieList() {
     <div>
       <PageTitle>영화 둘러보기</PageTitle>
 
-      <Rating onSelect={(min, max) => setRating({ min, max })} />
+      <Rating
+        onSelect={(min, max) => {
+          setMovies([]);
+          setError(false);
+          setRating({ min, max });
+        }}
+      />
 
       <MovieGrid>
         {movies.map((movie) => (
