@@ -14,6 +14,10 @@ export type MovieDetailType = {
   original_title: string;
   original_language: string;
   origin_country: string[];
+  production_countries: {
+    iso_3166_1: string;
+    name: string;
+  }[];
   spoken_languages: {
     english_name: string;
     name: string;

@@ -82,10 +82,10 @@ function MovieDetail() {
           {movie.original_language}
         </p>{" "}
         {/*원어*/}
-        <p className="origin_country">
+        <p className="production_countries">
           <span>제작국가</span>
           <br />
-          {movie.origin_country.join(", ")}
+          {movie.production_countries.map((country) => country.name).join(", ")}
         </p>
         {/*제작국가*/}
         <p className="spoken_languages">
