@@ -1,79 +1,42 @@
-//const [Rating, setRating] = useState("all")
 import styled from "styled-components";
 import { useState } from "react";
 
 type RatingProps = {
   onSelect: (min?: number, max?: number) => void;
 };
+interface RatingFilter {
+  label: string;
+  min?: number;
+  max?: number;
+}
+
+const ratingFilters: RatingFilter[] = [
+  { label: "전체" },
+  { label: "9점 이상", min: 9 },
+  { label: "8~9점", min: 8, max: 9 },
+  { label: "7~8점", min: 7, max: 8 },
+  { label: "6~7점", min: 6, max: 7 },
+  { label: "6점 미만", max: 6 },
+];
+
 const Rating = ({ onSelect }: RatingProps) => {
   const [selected, setSelected] = useState("전체");
   return (
     <RatingButton>
-      <button
-        type="button"
-        onClick={() => {
-          onSelect();
-          setSelected("전체");
-        }}
-        className={selected === "전체" ? "active" : ""}
-      >
-        전체
-      </button>
-
-      <button
-        type="button"
-        onClick={() => {
-          onSelect(9);
-          setSelected("9점 이상");
-        }}
-        className={selected === "9점 이상" ? "active" : ""}
-      >
-        9점 이상
-      </button>
-
-      <button
-        type="button"
-        onClick={() => {
-          onSelect(8, 9);
-          setSelected("8~9점");
-        }}
-        className={selected === "8~9점" ? "active" : ""}
-      >
-        8~9점
-      </button>
-
-      <button
-        type="button"
-        onClick={() => {
-          onSelect(7, 8);
-          setSelected("7~8점");
-        }}
-        className={selected === "7~8점" ? "active" : ""}
-      >
-        7~8점
-      </button>
-
-      <button
-        type="button"
-        onClick={() => {
-          onSelect(6, 7);
-          setSelected("6~7점");
-        }}
-        className={selected === "6~7점" ? "active" : ""}
-      >
-        6~7점
-      </button>
-
-      <button
-        type="button"
-        onClick={() => {
-          onSelect(undefined, 6);
-          setSelected("6점 미만");
-        }}
-        className={selected === "6점 미만" ? "active" : ""}
-      >
-        6점 미만
-      </button>
+      {ratingFilters.map((filter) => (
+        <button
+          key={filter.label}
+          type="button"
+          onClick={() => {
+            onSelect(filter.min, filter.max);
+            setSelected(filter.label);
+          }}
+          className={selected === filter.label ? "active" : ""}
+          aria-pressed={selected === filter.label}
+        >
+          {filter.label}
+        </button>
+      ))}
     </RatingButton>
   );
 };
