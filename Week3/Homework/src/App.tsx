@@ -4,7 +4,7 @@ import { theme } from "./styles/theme";
 import Header from "./components/Header";
 import MovieList from "./pages/MovieListPage";
 import MovieDetail from "./pages/MovieDetailPage";
-import { BrowserRouter, Routes, Route } from "react-router";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   return (

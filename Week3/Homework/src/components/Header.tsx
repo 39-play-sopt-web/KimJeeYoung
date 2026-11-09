@@ -20,10 +20,9 @@ const Head = styled.div`
   left: 0;
   width: 100%;
   z-index: 10;
-  background :${({ theme }) => theme.colors.background}; } ;
-    
-  border-bottom: 1px solid #CCCCCC;
-;
+  background: ${({ theme }) => theme.colors.background};
+
+  border-bottom: 1px solid #cccccc;
   display: grid;
 
   h1 {
