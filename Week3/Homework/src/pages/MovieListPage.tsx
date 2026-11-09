@@ -135,6 +135,9 @@ function MovieList() {
           setRating({ min, max });
         }}
       />
+      {error && (
+        <p role="alert">영화 목록을 불러오지 못했습니다. 다시 시도해 주세요.</p>
+      )}
 
       <MovieGrid>
         {movies.map((movie) => (
