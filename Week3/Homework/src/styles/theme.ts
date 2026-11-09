@@ -6,3 +6,5 @@ export const theme = {
     mint: "linear-gradient(90deg, #B7FAFE, #76FDC0)",
   },
 };
+
+export type Theme = typeof theme;
