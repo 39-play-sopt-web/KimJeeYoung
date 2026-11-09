@@ -1,5 +1,5 @@
-import { Link } from "react-router";
-import { useParams } from "react-router";
+import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { getMovieDetail } from "../apis/MovieDetail";
 import type { MovieDetailType } from "../apis/MovieDetail";
 import { useEffect, useState } from "react";
@@ -13,8 +13,12 @@ function MovieDetail() {
     async function loadMovie() {
       if (!movieId) return;
 
-      const data = await getMovieDetail(movieId);
-      setMovie(data);
+      try {
+        const data = await getMovieDetail(movieId);
+        setMovie(data);
+      } catch (error) {
+        console.error("영화 상세 정보 조회 실패:", error);
+      }
     }
 
     loadMovie();
@@ -41,7 +45,9 @@ function MovieDetail() {
             {/*평점*/}
             <p className="releaseDate">{movie.release_date}</p> {/*개봉일*/}
             <p className="runTime">
-              {Math.floor(movie.runtime / 60)}시간 {movie.runtime % 60}분
+              {movie.runtime !== null
+                ? `${Math.floor(movie.runtime / 60)}시간 ${movie.runtime % 60}분`
+                : "정보 없음"}
             </p>{" "}
             {/*러닝타임*/}
             <p className="vote_count">
@@ -85,9 +91,7 @@ function MovieDetail() {
         <p className="spoken_languages">
           <span>사용언어</span>
           <br />
-          {movie.spoken_languages.map((language) => (
-            <span key={language.iso_639_1}>{language.name}</span>
-          ))}
+          {movie.spoken_languages.map((language) => language.name).join(", ")}
         </p>
         {/*사용언어*/}
         <p className="budget">
@@ -146,8 +150,6 @@ const Info = styled.div`
   display: flex;
   gap: 20px;
   color: ${({ theme }) => theme.colors.text};
-  
-  }
 `;
 
 //상단부 오른쪽 장르
