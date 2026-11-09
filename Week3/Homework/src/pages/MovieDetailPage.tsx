@@ -4,6 +4,7 @@ import { getMovieDetail } from "../apis/MovieDetail";
 import type { MovieDetailType } from "../apis/MovieDetail";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { ScoreBadge, Overview } from "../components/MovieInfo";
 
 function MovieDetail() {
   const { movieId } = useParams();
@@ -41,7 +42,7 @@ function MovieDetail() {
         <Right>
           <h1 className="title">{movie.title}</h1> {/*제목*/}
           <Info>
-            <p className="score">★ {movie.vote_average.toFixed(1)}</p>{" "}
+            <ScoreBadge>★ {movie.vote_average.toFixed(1)}</ScoreBadge>
             {/*평점*/}
             <p className="releaseDate">{movie.release_date}</p> {/*개봉일*/}
             <p className="runTime">
@@ -65,9 +66,7 @@ function MovieDetail() {
         </Right>
       </Top>
       <h2 style={{ marginTop: "60px" }}>줄거리</h2>
-      <p className="overview">
-        {movie.overview || "등록된 줄거리가 없습니다."}
-      </p>{" "}
+      <Overview>{movie.overview || "등록된 줄거리가 없습니다."}</Overview>
       {/*줄거리*/}
       <h2 style={{ marginTop: "60px" }}>기본 정보</h2>
       <BasicInfo>

@@ -5,8 +5,12 @@ const GlobalStyle = createGlobalStyle`
     background-color: ${({ theme }) => theme.colors.background};
     color: white;
     margin: 0;
-    padding : 150px 300px 0;
+    padding : 150px 20px 0;
   }
+    #root {
+  max-width: 1200px;
+  margin: 0 auto;
+}
     button {
     cursor: pointer;
   }
@@ -15,19 +19,7 @@ const GlobalStyle = createGlobalStyle`
     color: inherit;
     text-decoration: none;
   }
-  .overview {
-  color: ${({ theme }) => theme.colors.text};}
-
-.score {
-    display: grid;
-    place-items: center;
-    width: 65px;
-    height: 30px;
-    border-radius: 8px;
-    font-weight: bold;
-    color: black;
-    
-    background:${({ theme }) => theme.colors.mint}; }
+  
 
   `;
 

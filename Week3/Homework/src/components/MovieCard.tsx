@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import type { Movie } from "../apis/MovieList";
 import { Link } from "react-router-dom";
+import { ScoreBadge, Overview } from "./MovieInfo";
 
 type MovieCardProps = {
   movie: Movie;
@@ -10,7 +11,7 @@ const MovieCard = ({ movie }: MovieCardProps) => {
   return (
     <Link to={`/movie/${movie.id}`}>
       <Card>
-        <span className="score">★ {movie.vote_average.toFixed(1)}</span>
+        <ScoreBadge>★ {movie.vote_average.toFixed(1)}</ScoreBadge>
         {movie.poster_path ? (
           <img
             className="poster"
@@ -24,9 +25,9 @@ const MovieCard = ({ movie }: MovieCardProps) => {
         <Info>
           <h2 className="title">{movie.title}</h2> {/*제목*/}
           <p className="releaseDate">{movie.release_date}</p> {/*개봉일*/}
-          <p className="overview">
+          <Overview className="overview">
             {movie.overview || "등록된 줄거리가 없습니다."}
-          </p>{" "}
+          </Overview>
           {/*줄거리*/}
         </Info>
       </Card>
@@ -52,7 +53,7 @@ const Card = styled.article`
     border-color: #adf7dc;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
   }
-  .score {
+  ${ScoreBadge} {
     position: absolute;
     top: 15px;
     left: 15px;
