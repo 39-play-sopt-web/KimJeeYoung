@@ -11,11 +11,15 @@ const MovieCard = ({ movie }: MovieCardProps) => {
     <Link to={`/movie/${movie.id}`}>
       <Card>
         <span className="score">★ {movie.vote_average.toFixed(1)}</span>
-        <img
-          className="poster"
-          src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-          alt={movie.title}
-        />
+        {movie.poster_path ? (
+          <img
+            className="poster"
+            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+            alt={`${movie.title} 포스터`}
+          />
+        ) : (
+          <div className="poster">포스터 없음</div>
+        )}
 
         <Info>
           <h2 className="title">{movie.title}</h2> {/*제목*/}
@@ -58,6 +62,16 @@ const Card = styled.article`
     width: 100%;
     height: 400px;
     border-radius: 8px 8px 0 0;
+    object-fit: cover;
+  }
+
+  div.poster {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: ${({ theme }) => theme.colors.card};
+    color: #adf7dc;
+    font-size: 18px;
   }
 `;
 
@@ -86,6 +100,3 @@ const Info = styled.div`
     margin-top: -5px;
   }
 `;
-
-//const Poster = styled.div'
-// width: 100%; `
