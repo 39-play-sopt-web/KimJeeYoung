@@ -30,9 +30,7 @@ export type MovieDetailType = {
 // 영화 상세 정보 조회
 export async function getMovieDetail(movieId: string) {
   const result = await apiClient.get<MovieDetailType>(`/movie/${movieId}`, {
-    params: {
-      language: "ko-KR",
-    },
+    params: {},
   });
 
   return result.data;

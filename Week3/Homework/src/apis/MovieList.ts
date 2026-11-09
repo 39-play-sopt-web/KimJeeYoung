@@ -25,7 +25,6 @@ export async function getMovieList(
 ) {
   const result = await apiClient.get<MovieListResponse>("/discover/movie", {
     params: {
-      language: "ko-KR",
       "vote_average.gte": minRating,
       "vote_average.lte": maxRating,
       page,
